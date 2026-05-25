@@ -52,7 +52,7 @@ def enviar_email_bienvenida(email_destino):
     alt_part.attach(MIMEText(html_content, 'html'))
     msg.attach(alt_part)
 
-    logo_path = os.path.join(app.root_path, 'static', 'img', 'riftzone_logo.jpg')
+    logo_path = os.path.join(app.root_path, 'static', 'img', 'riftzone_logo_email.jpg')
     if os.path.exists(logo_path):
         with open(logo_path, 'rb') as f:
             logo_img = MIMEImage(f.read(), _subtype='jpeg')

@@ -129,20 +129,19 @@
 
         .logo-center {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            font-size: 28px;
-            font-weight: 800;
             margin-bottom: 16px;
             animation: fadeInScale 0.6s ease-out 0.2s both;
         }
 
-        .logo-center .logo-icon {
-            width: 52px; height: 52px;
-            font-size: 26px;
+        .logo-center .logo-img {
+            width: 180px;
+            height: auto;
+            border-radius: 12px;
             animation: float 3s ease-in-out infinite;
-            transition: transform 0.3s ease;
+            filter: drop-shadow(0 0 20px rgba(16, 224, 240, 0.3));
         }
 
         .subtitle {
@@ -331,8 +330,7 @@
 
 <div class="pre-registro-container">
     <div class="logo-center">
-        <div class="logo-icon"><i class="fas fa-gamepad"></i></div>
-        RiftZone
+        <img class="logo-img" src="{{ url_for('static', filename='img/riftzone_logo.jpg') }}" alt="RiftZone">
     </div>
 
     <p class="subtitle">
