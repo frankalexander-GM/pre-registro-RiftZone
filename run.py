@@ -23,6 +23,12 @@ if __name__ == '__main__':
     print(f"Debug: {debug_mode}")
     print(f"Port: {port}")
 
+    mail_user = os.environ.get('MAIL_USERNAME')
+    if mail_user:
+        print(f"Email configurado: {mail_user}")
+    else:
+        print("ADVERTENCIA: Email NO configurado. Crea un archivo .env con MAIL_USERNAME y MAIL_PASSWORD")
+
     app.run(
         host='0.0.0.0',
         port=port,

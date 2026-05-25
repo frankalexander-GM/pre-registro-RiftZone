@@ -506,7 +506,7 @@
         const email = document.getElementById('email').value.trim();
 
         msgDiv.className = 'msg';
-        msgDiv.style.display = 'none';
+        msgDiv.removeAttribute('style');
         msgDiv.textContent = '';
         btnSubmit.disabled = true;
         btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
@@ -531,9 +531,9 @@
                 msgDiv.className = 'msg error';
                 msgDiv.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right:8px;"></i>' + data.message;
             }
-        } catch {
+        } catch (err) {
             msgDiv.className = 'msg error';
-            msgDiv.innerHTML = '<i class="fas fa-wifi" style="margin-right:8px;"></i>Error de conexión. Intenta de nuevo.';
+            msgDiv.innerHTML = '<i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i>Error de conexión. Intenta de nuevo.';
         } finally {
             btnSubmit.disabled = false;
             btnSubmit.innerHTML = '<i class="fas fa-rocket"></i> Pre-registrarme';
