@@ -321,6 +321,108 @@
         .feature-item:hover span {
             color: var(--text-main);
         }
+
+        /* === PANTALLA DE BIENVENIDA === */
+        .welcome-screen {
+            display: none;
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .welcome-screen::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue), var(--accent-purple));
+            background-size: 300% 100%;
+            animation: gradientShift 4s ease infinite;
+        }
+
+        .welcome-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            animation: fadeInScale 0.6s ease-out 0.2s both;
+        }
+
+        .welcome-subtitle {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.5s ease-out 0.4s both;
+        }
+
+        .community-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            animation: fadeInUp 0.5s ease-out 0.6s both;
+        }
+
+        .community-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .community-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .community-btn i {
+            font-size: 22px;
+        }
+
+        .btn-discord {
+            background: linear-gradient(135deg, #5865F2, #7289DA);
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
+        }
+
+        .btn-discord:hover {
+            box-shadow: 0 6px 25px rgba(88, 101, 242, 0.5);
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
+        }
+
+        .welcome-footer {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.5;
+            animation: fadeInUp 0.5s ease-out 0.8s both;
+        }
     </style>
 </head>
 <body>
@@ -410,6 +512,33 @@
             <i class="fas fa-tower-broadcast"></i>
             <span>Live</span>
         </div>
+    </div>
+</div>
+
+<!-- Pantalla de bienvenida post-registro -->
+<div id="welcome-screen" class="welcome-screen">
+    <div class="logo-center">
+        <img class="logo-img" src="{{ url_for('static', filename='img/riftzone_logo.jpg') }}" alt="RiftZone">
+    </div>
+
+    <h2 class="welcome-title">¡Ya estás dentro!</h2>
+    <p class="welcome-subtitle">
+        Tu pre-registro fue exitoso. Mientras esperamos el lanzamiento,
+        únete a nuestra comunidad y conoce a otros gamers.
+    </p>
+
+    <div class="community-buttons">
+        <a href="https://discord.gg/C23PcduvTp" target="_blank" class="community-btn btn-discord">
+            <i class="fab fa-discord"></i> Únete a Discord
+        </a>
+        <a href="https://chat.whatsapp.com/tIbBcYrT6wq9C7jq5UpRTO4" target="_blank" class="community-btn btn-whatsapp">
+            <i class="fab fa-whatsapp"></i> Únete a WhatsApp
+        </a>
+    </div>
+
+    <div class="welcome-footer">
+        Te enviaremos un correo cuando lancemos la plataforma.<br>
+        <strong style="color:var(--accent-blue);">¡Gracias por ser parte de RiftZone!</strong>
     </div>
 </div>
 
@@ -607,6 +736,8 @@
     const stepCodigo = document.getElementById('step-codigo');
     const csrfToken = document.querySelector('input[name="csrf_token"]').value;
 
+    const preRegistroContainer = document.querySelector('.pre-registro-container');
+    const welcomeScreen = document.getElementById('welcome-screen');
     let emailPendiente = '';
 
     function resetMsg() {
@@ -624,6 +755,11 @@
             stepCodigo.style.display = 'block';
             document.getElementById('codigo').focus();
         }
+    }
+
+    function mostrarBienvenida() {
+        preRegistroContainer.style.display = 'none';
+        welcomeScreen.style.display = 'block';
     }
 
     // Paso 1: Enviar email
@@ -695,11 +831,9 @@
             const data = await res.json();
 
             if (data.status === 'success') {
-                msgDiv.className = 'msg success';
-                msgDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right:8px;"></i>' + data.message + '<br><span style="font-size:12px;opacity:0.8;font-weight:400;margin-top:6px;display:inline-block;">Revisa tu bandeja de entrada o la carpeta de spam.</span>';
                 form.reset();
-                mostrarPaso('email');
                 launchConfetti();
+                setTimeout(() => { mostrarBienvenida(); }, 800);
             } else if (data.status === 'duplicate') {
                 msgDiv.className = 'msg info';
                 msgDiv.innerHTML = '<i class="fas fa-heart" style="margin-right:8px;"></i>¡Ya estás en la lista!';
