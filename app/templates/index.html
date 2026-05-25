@@ -10,6 +10,85 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* === KEYFRAMES === */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.6), 0 0 60px rgba(255, 45, 149, 0.2); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        @keyframes msgSlideIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* === PARTICLES BACKGROUND === */
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            bottom: -10px;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            animation: particleFloat linear infinite;
+            opacity: 0;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; width: 3px; height: 3px; background: var(--accent-magenta); }
+        .particle:nth-child(2) { left: 25%; animation-duration: 15s; animation-delay: 2s; width: 5px; height: 5px; }
+        .particle:nth-child(3) { left: 40%; animation-duration: 10s; animation-delay: 4s; width: 3px; height: 3px; background: var(--accent-blue); }
+        .particle:nth-child(4) { left: 55%; animation-duration: 18s; animation-delay: 1s; width: 4px; height: 4px; background: var(--accent-magenta); }
+        .particle:nth-child(5) { left: 70%; animation-duration: 14s; animation-delay: 3s; width: 6px; height: 6px; }
+        .particle:nth-child(6) { left: 85%; animation-duration: 11s; animation-delay: 5s; width: 3px; height: 3px; background: var(--accent-blue); }
+        .particle:nth-child(7) { left: 15%; animation-duration: 16s; animation-delay: 7s; width: 4px; height: 4px; background: var(--accent-green); }
+        .particle:nth-child(8) { left: 60%; animation-duration: 13s; animation-delay: 6s; width: 5px; height: 5px; background: var(--accent-magenta); }
+
+        /* === MAIN STYLES === */
         body {
             display: flex;
             align-items: center;
@@ -30,6 +109,12 @@
             position: relative;
             overflow: hidden;
             text-align: center;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .pre-registro-container:hover {
+            animation: glowPulse 3s ease-in-out infinite;
         }
 
         .pre-registro-container::before {
@@ -37,7 +122,9 @@
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--accent-purple), var(--accent-magenta));
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-magenta), var(--accent-blue), var(--accent-purple));
+            background-size: 300% 100%;
+            animation: gradientShift 4s ease infinite;
         }
 
         .logo-center {
@@ -48,11 +135,18 @@
             font-size: 28px;
             font-weight: 800;
             margin-bottom: 16px;
+            animation: fadeInScale 0.6s ease-out 0.2s both;
         }
 
         .logo-center .logo-icon {
             width: 52px; height: 52px;
             font-size: 26px;
+            animation: float 3s ease-in-out infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-center .logo-icon:hover {
+            animation: iconBounce 0.4s ease;
         }
 
         .subtitle {
@@ -60,11 +154,13 @@
             font-size: 15px;
             margin-bottom: 36px;
             line-height: 1.5;
+            animation: fadeInUp 0.6s ease-out 0.4s both;
         }
 
         .form-group {
             margin-bottom: 20px;
             text-align: left;
+            animation: slideInLeft 0.5s ease-out 0.6s both;
         }
 
         .form-label {
@@ -83,13 +179,14 @@
             padding: 14px 16px;
             color: white;
             font-size: 15px;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--accent-purple);
-            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2), 0 0 20px rgba(139, 92, 246, 0.1);
+            transform: scale(1.01);
         }
 
         .btn-registro {
@@ -103,16 +200,39 @@
             align-items: center;
             gap: 8px;
             background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            background-size: 200% 200%;
             color: white;
             border: none;
             border-radius: var(--radius-md);
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.5s ease-out 0.8s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-registro::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg) translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-registro:hover::after {
+            transform: rotate(45deg) translateX(100%);
         }
 
         .btn-registro:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--neon-glow);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.5), 0 0 50px rgba(255, 45, 149, 0.2);
+            background-size: 100% 100%;
+        }
+
+        .btn-registro:active {
+            transform: translateY(0) scale(0.98);
         }
 
         .btn-registro:disabled {
@@ -136,6 +256,7 @@
             background: rgba(16, 185, 129, 0.1);
             border-left: 4px solid var(--accent-green);
             color: var(--accent-green);
+            animation: msgSlideIn 0.4s ease-out;
         }
 
         .msg.error {
@@ -143,6 +264,7 @@
             background: rgba(255, 45, 149, 0.1);
             border-left: 4px solid var(--accent-magenta);
             color: var(--accent-magenta);
+            animation: msgSlideIn 0.4s ease-out;
         }
 
         .features {
@@ -159,6 +281,22 @@
             flex-direction: column;
             align-items: center;
             gap: 6px;
+            animation: fadeInUp 0.5s ease-out both;
+            transition: transform 0.3s ease;
+            cursor: default;
+        }
+
+        .feature-item:nth-child(1) { animation-delay: 1.0s; }
+        .feature-item:nth-child(2) { animation-delay: 1.15s; }
+        .feature-item:nth-child(3) { animation-delay: 1.3s; }
+        .feature-item:nth-child(4) { animation-delay: 1.45s; }
+
+        .feature-item:hover {
+            transform: translateY(-4px);
+        }
+
+        .feature-item:hover i {
+            animation: iconBounce 0.4s ease;
         }
 
         .feature-item i {
@@ -166,16 +304,34 @@
             background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
         }
 
         .feature-item span {
             font-size: 11px;
             color: var(--text-muted);
             font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .feature-item:hover span {
+            color: var(--text-main);
         }
     </style>
 </head>
 <body>
+
+<!-- Partículas animadas de fondo -->
+<div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+</div>
 
 <div class="pre-registro-container">
     <div class="logo-center">
