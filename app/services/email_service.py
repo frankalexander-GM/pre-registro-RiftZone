@@ -1,4 +1,6 @@
+import os
 import smtplib
+from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from threading import Thread
@@ -30,7 +32,8 @@ def enviar_email_bienvenida(email_destino):
         print("MAIL_USERNAME o MAIL_PASSWORD no configurados. Email no enviado.")
         return
 
-    msg = MIMEMultipart('alternative')
+    msg = MIMEMultipart('related')
+
     msg['Subject'] = 'Bienvenido a RiftZone - Pre-Registro Exitoso'
     msg['From'] = f'RiftZone <{smtp_user}>'
     msg['To'] = email_destino
@@ -44,8 +47,18 @@ def enviar_email_bienvenida(email_destino):
         "- El equipo de RiftZone"
     )
 
-    msg.attach(MIMEText(texto_plano, 'plain'))
-    msg.attach(MIMEText(html_content, 'html'))
+    alt_part = MIMEMultipart('alternative')
+    alt_part.attach(MIMEText(texto_plano, 'plain'))
+    alt_part.attach(MIMEText(html_content, 'html'))
+    msg.attach(alt_part)
+
+    logo_path = os.path.join(app.root_path, 'static', 'img', 'riftzone_logo.jpg')
+    if os.path.exists(logo_path):
+        with open(logo_path, 'rb') as f:
+            logo_img = MIMEImage(f.read(), _subtype='jpeg')
+            logo_img.add_header('Content-ID', '<riftzone_logo>')
+            logo_img.add_header('Content-Disposition', 'inline', filename='riftzone_logo.jpg')
+            msg.attach(logo_img)
 
     thread = Thread(target=_send_async, args=(app, msg, smtp_server, smtp_port, smtp_user, smtp_pass))
     thread.start()
