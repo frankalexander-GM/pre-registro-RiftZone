@@ -1,6 +1,4 @@
-import os
 import smtplib
-from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from threading import Thread
@@ -18,16 +16,6 @@ def _send_async(app, msg, smtp_server, smtp_port, smtp_user, smtp_pass):
             print(f"Email enviado a {msg['To']}")
         except Exception as e:
             print(f"Error enviando email a {msg['To']}: {e}")
-
-
-def _adjuntar_logo(app, msg):
-    logo_path = os.path.join(app.root_path, 'static', 'img', 'riftzone_logo_email.jpg')
-    if os.path.exists(logo_path):
-        with open(logo_path, 'rb') as f:
-            logo_img = MIMEImage(f.read(), _subtype='jpeg')
-            logo_img.add_header('Content-ID', '<riftzone_logo>')
-            logo_img.add_header('Content-Disposition', 'inline', filename='riftzone_logo.jpg')
-            msg.attach(logo_img)
 
 
 def _enviar(app, msg):
@@ -50,7 +38,7 @@ def enviar_email_verificacion(email_destino, codigo):
         print("MAIL_USERNAME o MAIL_PASSWORD no configurados. Email no enviado.")
         return
 
-    msg = MIMEMultipart('related')
+    msg = MIMEMultipart('alternative')
     msg['Subject'] = f'RiftZone - Tu código de verificación: {codigo}'
     msg['From'] = f'RiftZone <{smtp_user}>'
     msg['To'] = email_destino
@@ -64,12 +52,9 @@ def enviar_email_verificacion(email_destino, codigo):
         "- El equipo de RiftZone"
     )
 
-    alt_part = MIMEMultipart('alternative')
-    alt_part.attach(MIMEText(texto_plano, 'plain'))
-    alt_part.attach(MIMEText(html_content, 'html'))
-    msg.attach(alt_part)
+    msg.attach(MIMEText(texto_plano, 'plain'))
+    msg.attach(MIMEText(html_content, 'html'))
 
-    _adjuntar_logo(app, msg)
     _enviar(app, msg)
 
 
@@ -83,7 +68,7 @@ def enviar_email_bienvenida(email_destino):
         print("MAIL_USERNAME o MAIL_PASSWORD no configurados. Email no enviado.")
         return
 
-    msg = MIMEMultipart('related')
+    msg = MIMEMultipart('alternative')
     msg['Subject'] = 'Bienvenido a RiftZone - Pre-Registro Exitoso'
     msg['From'] = f'RiftZone <{smtp_user}>'
     msg['To'] = email_destino
@@ -94,13 +79,13 @@ def enviar_email_bienvenida(email_destino):
         "Bienvenido a RiftZone!\n\n"
         "Tu pre-registro fue exitoso. Eres parte de los primeros en unirse.\n"
         "Te avisaremos cuando lancemos la plataforma.\n\n"
+        "Únete a nuestra comunidad:\n"
+        "Discord: https://discord.gg/C23PcduvTp\n"
+        "WhatsApp: https://chat.whatsapp.com/tIbBcYrT6wq9C7jq5UpRTO4\n\n"
         "- El equipo de RiftZone"
     )
 
-    alt_part = MIMEMultipart('alternative')
-    alt_part.attach(MIMEText(texto_plano, 'plain'))
-    alt_part.attach(MIMEText(html_content, 'html'))
-    msg.attach(alt_part)
+    msg.attach(MIMEText(texto_plano, 'plain'))
+    msg.attach(MIMEText(html_content, 'html'))
 
-    _adjuntar_logo(app, msg)
     _enviar(app, msg)
