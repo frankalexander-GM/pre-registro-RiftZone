@@ -94,12 +94,13 @@
         /* === MAIN STYLES === */
         body {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             background: #050510;
             padding: 24px;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         .pre-registro-container {
@@ -423,6 +424,29 @@
             line-height: 1.5;
             animation: fadeInUp 0.5s ease-out 0.8s both;
         }
+
+        /* === ESPACIO GOOGLE ADS === */
+        .ad-container {
+            width: 100%;
+            max-width: 728px;
+            margin-top: 24px;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease-out 1.2s both;
+        }
+
+        .ad-slot {
+            background-color: rgba(18, 18, 26, 0.6);
+            border: 1px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 12px;
+            padding: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -539,6 +563,24 @@
     <div class="welcome-footer">
         Te enviaremos un correo cuando lancemos la plataforma.<br>
         <strong style="color:var(--accent-blue);">¡Gracias por ser parte de RiftZone!</strong>
+    </div>
+</div>
+
+<!-- Google Ads - Espacio reservado -->
+<div class="ad-container">
+    <div class="ad-slot" id="ad-slot-bottom">
+        <!-- GOOGLE ADSENSE: Reemplaza este div con tu código de AdSense -->
+        <!-- Ejemplo:
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+            data-ad-slot="XXXXXXXXXX"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        -->
+        Espacio reservado para publicidad
     </div>
 </div>
 
