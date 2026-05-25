@@ -28,9 +28,9 @@ def create_app(config_name='default'):
     register_blueprints(app)
 
     with app.app_context():
-        from app.models.pre_registro import PreRegistro
+        from app.models.pre_registro import PreRegistro, CodigoVerificacion
         db.create_all()
-        print("Tabla pre_registros verificada/creada con éxito.")
+        print("Tablas pre_registros y codigos_verificacion verificadas/creadas con éxito.")
 
     return app
 

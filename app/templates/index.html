@@ -341,22 +341,50 @@
     <form id="pre-registro-form">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-        <div class="form-group">
-            <label class="form-label"><i class="fas fa-envelope" style="margin-right:6px; color:var(--accent-purple);"></i>Correo Electrónico</label>
-            <input
-                id="email"
-                type="email"
-                name="email"
-                placeholder="tu@correo.com"
-                required
-                autocomplete="email"
-                class="form-control"
-            >
+        <!-- Paso 1: Email -->
+        <div id="step-email">
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-envelope" style="margin-right:6px; color:var(--accent-blue);"></i>Correo Electrónico</label>
+                <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="tu@correo.com"
+                    required
+                    autocomplete="email"
+                    class="form-control"
+                >
+            </div>
+
+            <button type="submit" id="btn-submit" class="btn-registro">
+                <i class="fas fa-rocket"></i> Pre-registrarme
+            </button>
         </div>
 
-        <button type="submit" id="btn-submit" class="btn-registro">
-            <i class="fas fa-rocket"></i> Pre-registrarme
-        </button>
+        <!-- Paso 2: Código de verificación -->
+        <div id="step-codigo" style="display:none;">
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-key" style="margin-right:6px; color:var(--accent-blue);"></i>Código de Verificación</label>
+                <input
+                    id="codigo"
+                    type="text"
+                    name="codigo"
+                    placeholder="000000"
+                    maxlength="6"
+                    autocomplete="one-time-code"
+                    class="form-control"
+                    style="text-align:center; font-size:24px; letter-spacing:8px; font-weight:700;"
+                >
+            </div>
+
+            <button type="button" id="btn-verificar" class="btn-registro">
+                <i class="fas fa-check-circle"></i> Verificar código
+            </button>
+
+            <button type="button" id="btn-volver" style="width:100%; padding:10px; margin-top:10px; background:transparent; border:1px solid var(--border-color); border-radius:var(--radius-md); color:var(--text-muted); cursor:pointer; font-size:13px; transition: all 0.3s ease;">
+                <i class="fas fa-arrow-left"></i> Cambiar correo
+            </button>
+        </div>
     </form>
 
     <div id="message" class="msg"></div>
@@ -573,17 +601,39 @@
     const form = document.getElementById('pre-registro-form');
     const msgDiv = document.getElementById('message');
     const btnSubmit = document.getElementById('btn-submit');
+    const btnVerificar = document.getElementById('btn-verificar');
+    const btnVolver = document.getElementById('btn-volver');
+    const stepEmail = document.getElementById('step-email');
+    const stepCodigo = document.getElementById('step-codigo');
     const csrfToken = document.querySelector('input[name="csrf_token"]').value;
 
+    let emailPendiente = '';
+
+    function resetMsg() {
+        msgDiv.className = 'msg';
+        msgDiv.removeAttribute('style');
+        msgDiv.textContent = '';
+    }
+
+    function mostrarPaso(paso) {
+        if (paso === 'email') {
+            stepEmail.style.display = 'block';
+            stepCodigo.style.display = 'none';
+        } else {
+            stepEmail.style.display = 'none';
+            stepCodigo.style.display = 'block';
+            document.getElementById('codigo').focus();
+        }
+    }
+
+    // Paso 1: Enviar email
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('email').value.trim();
 
-        msgDiv.className = 'msg';
-        msgDiv.removeAttribute('style');
-        msgDiv.textContent = '';
+        resetMsg();
         btnSubmit.disabled = true;
-        btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+        btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando código...';
 
         try {
             const res = await fetch('/pre-registro', {
@@ -597,12 +647,12 @@
 
             const data = await res.json();
 
-            if (data.status === 'success') {
-                msgDiv.className = 'msg success';
-                msgDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right:8px;"></i>' + data.message + '<br><span style="font-size:12px;opacity:0.8;font-weight:400;margin-top:6px;display:inline-block;">Revisa tu bandeja de entrada o la carpeta de spam.</span>';
-                form.reset();
-                launchConfetti();
-            } else if (res.status === 409) {
+            if (data.status === 'verify') {
+                emailPendiente = email;
+                mostrarPaso('codigo');
+                msgDiv.className = 'msg info';
+                msgDiv.innerHTML = '<i class="fas fa-envelope-open" style="margin-right:8px;"></i>' + data.message;
+            } else if (data.status === 'duplicate') {
                 msgDiv.className = 'msg info';
                 msgDiv.innerHTML = '<i class="fas fa-heart" style="margin-right:8px;"></i>¡Ya estás en la lista! Tu correo fue registrado anteriormente.<br><span style="font-size:12px;opacity:0.8;font-weight:400;margin-top:6px;display:inline-block;">Tranquilo, te avisaremos cuando lancemos. ¡Gracias por tu entusiasmo!</span>';
             } else {
@@ -615,6 +665,70 @@
         } finally {
             btnSubmit.disabled = false;
             btnSubmit.innerHTML = '<i class="fas fa-rocket"></i> Pre-registrarme';
+        }
+    });
+
+    // Paso 2: Verificar código
+    btnVerificar.addEventListener('click', async () => {
+        const codigo = document.getElementById('codigo').value.trim();
+
+        if (!codigo || codigo.length !== 6) {
+            msgDiv.className = 'msg error';
+            msgDiv.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right:8px;"></i>Ingresa el código de 6 dígitos.';
+            return;
+        }
+
+        resetMsg();
+        btnVerificar.disabled = true;
+        btnVerificar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+
+        try {
+            const res = await fetch('/verificar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({ email: emailPendiente, codigo }),
+            });
+
+            const data = await res.json();
+
+            if (data.status === 'success') {
+                msgDiv.className = 'msg success';
+                msgDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right:8px;"></i>' + data.message + '<br><span style="font-size:12px;opacity:0.8;font-weight:400;margin-top:6px;display:inline-block;">Revisa tu bandeja de entrada o la carpeta de spam.</span>';
+                form.reset();
+                mostrarPaso('email');
+                launchConfetti();
+            } else if (data.status === 'duplicate') {
+                msgDiv.className = 'msg info';
+                msgDiv.innerHTML = '<i class="fas fa-heart" style="margin-right:8px;"></i>¡Ya estás en la lista!';
+                mostrarPaso('email');
+            } else {
+                msgDiv.className = 'msg error';
+                msgDiv.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right:8px;"></i>' + data.message;
+            }
+        } catch (err) {
+            msgDiv.className = 'msg error';
+            msgDiv.innerHTML = '<i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i>Error de conexión. Intenta de nuevo.';
+        } finally {
+            btnVerificar.disabled = false;
+            btnVerificar.innerHTML = '<i class="fas fa-check-circle"></i> Verificar código';
+        }
+    });
+
+    // Botón volver
+    btnVolver.addEventListener('click', () => {
+        resetMsg();
+        mostrarPaso('email');
+        document.getElementById('codigo').value = '';
+    });
+
+    // Enter en campo código
+    document.getElementById('codigo').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            btnVerificar.click();
         }
     });
 </script>
