@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Registro - RiftZone</title>
+
+    <link href="{{ url_for('static', filename='css/riftzone.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, var(--bg-panel) 0%, var(--bg-dark) 100%);
+            padding: 24px;
+        }
+
+        .pre-registro-container {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .pre-registro-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-magenta));
+        }
+
+        .logo-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .logo-center .logo-icon {
+            width: 52px; height: 52px;
+            font-size: 26px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 36px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            color: white;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+        }
+
+        .btn-registro {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            justify-content: center;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-registro:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--neon-glow);
+        }
+
+        .btn-registro:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .msg {
+            margin-top: 24px;
+            padding: 14px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .msg.success {
+            display: block;
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .msg.error {
+            display: block;
+            background: rgba(255, 45, 149, 0.1);
+            border-left: 4px solid var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+
+        .features {
+            margin-top: 36px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .feature-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feature-item i {
+            font-size: 20px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-item span {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="pre-registro-container">
+    <div class="logo-center">
+        <div class="logo-icon"><i class="fas fa-gamepad"></i></div>
+        RiftZone
+    </div>
+
+    <p class="subtitle">
+        Estamos construyendo la red social gaming definitiva.<br>
+        Déjanos tu correo y sé el primero en entrar.
+    </p>
+
+    <form id="pre-registro-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="form-group">
+            <label class="form-label"><i class="fas fa-envelope" style="margin-right:6px; color:var(--accent-purple);"></i>Correo Electrónico</label>
+            <input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="tu@correo.com"
+                required
+                autocomplete="email"
+                class="form-control"
+            >
+        </div>
+
+        <button type="submit" id="btn-submit" class="btn-registro">
+            <i class="fas fa-rocket"></i> Pre-registrarme
+        </button>
+    </form>
+
+    <div id="message" class="msg"></div>
+
+    <div class="features">
+        <div class="feature-item">
+            <i class="fas fa-users"></i>
+            <span>Comunidad</span>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-trophy"></i>
+            <span>Clanes</span>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-comments"></i>
+            <span>Chat</span>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-shield-halved"></i>
+            <span>Seguro</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('pre-registro-form');
+    const msgDiv = document.getElementById('message');
+    const btnSubmit = document.getElementById('btn-submit');
+    const csrfToken = document.querySelector('input[name="csrf_token"]').value;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+
+        msgDiv.className = 'msg';
+        msgDiv.style.display = 'none';
+        msgDiv.textContent = '';
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+        try {
+            const res = await fetch('/pre-registro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const data = await res.json();
+
+            if (data.status === 'success') {
+                msgDiv.className = 'msg success';
+                msgDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right:8px;"></i>' + data.message;
+                form.reset();
+            } else {
+                msgDiv.className = 'msg error';
+                msgDiv.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right:8px;"></i>' + data.message;
+            }
+        } catch {
+            msgDiv.className = 'msg error';
+            msgDiv.innerHTML = '<i class="fas fa-wifi" style="margin-right:8px;"></i>Error de conexión. Intenta de nuevo.';
+        } finally {
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = '<i class="fas fa-rocket"></i> Pre-registrarme';
+        }
+    });
+</script>
+
+</body>
+</html>
