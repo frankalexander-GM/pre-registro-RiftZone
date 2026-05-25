@@ -7,13 +7,14 @@
     --text-main: #ffffff;
     --text-muted: #8b8b9e;
     
-    --accent-purple: #8B5CF6;
-    --accent-magenta: #FF2D95;
-    --accent-blue: #3B82F6;
-    --accent-green: #10B981;
+    --accent-purple: #8030F0;
+    --accent-magenta: #60F0F0;
+    --accent-blue: #10E0F0;
+    --accent-green: #50F060;
+    --accent-cyan: #70B0F0;
     
     --border-color: rgba(255, 255, 255, 0.05);
-    --neon-glow: 0 0 15px rgba(139, 92, 246, 0.5);
+    --neon-glow: 0 0 15px rgba(16, 224, 240, 0.5);
     
     --nav-height: 70px;
     --sidebar-left-width: 260px;

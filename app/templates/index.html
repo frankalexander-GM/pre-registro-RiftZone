@@ -269,8 +269,8 @@
 
         .form-control:focus {
             outline: none;
-            border-color: var(--accent-purple);
-            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2), 0 0 20px rgba(139, 92, 246, 0.1);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(16, 224, 240, 0.2), 0 0 20px rgba(16, 224, 240, 0.1);
             transform: scale(1.01);
         }
 
@@ -312,7 +312,7 @@
 
         .btn-registro:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 0 25px rgba(139, 92, 246, 0.5), 0 0 50px rgba(255, 45, 149, 0.2);
+            box-shadow: 0 0 25px rgba(16, 224, 240, 0.5), 0 0 50px rgba(128, 48, 240, 0.3);
             background-size: 100% 100%;
         }
 
@@ -338,7 +338,7 @@
 
         .msg.success {
             display: block;
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(80, 240, 96, 0.1);
             border-left: 4px solid var(--accent-green);
             color: var(--accent-green);
             animation: msgSlideIn 0.4s ease-out;
@@ -346,17 +346,17 @@
 
         .msg.error {
             display: block;
-            background: rgba(255, 45, 149, 0.1);
-            border-left: 4px solid var(--accent-magenta);
-            color: var(--accent-magenta);
+            background: rgba(240, 60, 60, 0.1);
+            border-left: 4px solid #F03C3C;
+            color: #F03C3C;
             animation: msgSlideIn 0.4s ease-out;
         }
 
         .msg.info {
             display: block;
-            background: rgba(139, 92, 246, 0.1);
-            border-left: 4px solid var(--accent-purple);
-            color: var(--accent-purple);
+            background: rgba(96, 240, 240, 0.1);
+            border-left: 4px solid var(--accent-magenta);
+            color: var(--accent-magenta);
             animation: msgSlideIn 0.4s ease-out;
         }
 
@@ -524,7 +524,7 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const confettiColors = ['#8B5CF6', '#FF2D95', '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#EC4899', '#6366F1'];
+    const confettiColors = ['#8030F0', '#60F0F0', '#10E0F0', '#50F060', '#70B0F0', '#001050', '#A050FF', '#30FFD0'];
 
     function launchConfetti() {
         confettiPieces = [];
