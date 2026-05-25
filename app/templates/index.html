@@ -138,11 +138,11 @@
         }
 
         .logo-center .logo-img {
-            width: 180px;
+            width: 200px;
             height: auto;
-            border-radius: 12px;
+            border-radius: 16px;
             animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px rgba(16, 224, 240, 0.3));
+            filter: drop-shadow(0 0 25px rgba(0, 229, 255, 0.4)) drop-shadow(0 0 50px rgba(123, 47, 240, 0.2));
         }
 
         .subtitle {
@@ -181,7 +181,7 @@
         .form-control:focus {
             outline: none;
             border-color: var(--accent-blue);
-            box-shadow: 0 0 0 2px rgba(16, 224, 240, 0.2), 0 0 20px rgba(16, 224, 240, 0.1);
+            box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.2), 0 0 20px rgba(0, 229, 255, 0.1);
             transform: scale(1.01);
         }
 
@@ -223,7 +223,7 @@
 
         .btn-registro:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 0 25px rgba(16, 224, 240, 0.5), 0 0 50px rgba(128, 48, 240, 0.3);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.5), 0 0 50px rgba(123, 47, 240, 0.3);
             background-size: 100% 100%;
         }
 
@@ -594,7 +594,7 @@
         let nodes = [];
         const nodeCount = 80;
         const connectionDist = 150;
-        const colors = ['#8030F0', '#10E0F0', '#50F060', '#60F0F0', '#70B0F0'];
+        const colors = ['#7B2FF0', '#00E5FF', '#39FF14', '#00BCD4', '#64FFDA'];
 
         function resizeBg() {
             bgCanvas.width = window.innerWidth;
@@ -703,7 +703,7 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const confettiColors = ['#8030F0', '#60F0F0', '#10E0F0', '#50F060', '#70B0F0', '#001050', '#A050FF', '#30FFD0'];
+    const confettiColors = ['#7B2FF0', '#00E5FF', '#00BCD4', '#39FF14', '#64FFDA', '#001050', '#A050FF', '#30FFD0'];
 
     function launchConfetti() {
         confettiPieces = [];
