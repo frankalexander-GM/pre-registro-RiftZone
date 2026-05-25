@@ -606,7 +606,7 @@
 
             if (data.status === 'success') {
                 msgDiv.className = 'msg success';
-                msgDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right:8px;"></i>' + data.message;
+                msgDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right:8px;"></i>' + data.message + '<br><span style="font-size:12px;opacity:0.8;font-weight:400;margin-top:6px;display:inline-block;">Revisa tu bandeja de entrada o la carpeta de spam.</span>';
                 form.reset();
                 launchConfetti();
             } else {
