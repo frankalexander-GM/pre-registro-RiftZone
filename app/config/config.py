@@ -43,7 +43,7 @@ class DevelopmentConfig(Config):
 class ProductionConfig(Config):
     """Configuración para producción"""
     DEBUG = False
-    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'false').lower() == 'true'
 
 
 config = {
