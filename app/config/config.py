@@ -8,8 +8,11 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'riftzone_preregistro_secreto_12345'
 
     basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+    _db_url = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'pre_registros.db')
+    if _db_url.startswith('postgres://'):
+        _db_url = _db_url.replace('postgres://', 'postgresql://', 1)
+    SQLALCHEMY_DATABASE_URI = _db_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
 
