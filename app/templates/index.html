@@ -352,6 +352,14 @@
             animation: msgSlideIn 0.4s ease-out;
         }
 
+        .msg.info {
+            display: block;
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 4px solid var(--accent-purple);
+            color: var(--accent-purple);
+            animation: msgSlideIn 0.4s ease-out;
+        }
+
         .features {
             margin-top: 36px;
             padding-top: 24px;
@@ -609,6 +617,9 @@
                 msgDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right:8px;"></i>' + data.message + '<br><span style="font-size:12px;opacity:0.8;font-weight:400;margin-top:6px;display:inline-block;">Revisa tu bandeja de entrada o la carpeta de spam.</span>';
                 form.reset();
                 launchConfetti();
+            } else if (res.status === 409) {
+                msgDiv.className = 'msg info';
+                msgDiv.innerHTML = '<i class="fas fa-heart" style="margin-right:8px;"></i>¡Ya estás en la lista! Tu correo fue registrado anteriormente.<br><span style="font-size:12px;opacity:0.8;font-weight:400;margin-top:6px;display:inline-block;">Tranquilo, te avisaremos cuando lancemos. ¡Gracias por tu entusiasmo!</span>';
             } else {
                 msgDiv.className = 'msg error';
                 msgDiv.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right:8px;"></i>' + data.message;
