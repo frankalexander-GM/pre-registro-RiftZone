@@ -40,4 +40,7 @@ def registrar():
         db.session.rollback()
         return jsonify(status='error', message='Este correo ya está registrado.'), 409
 
+    from app.services.email_service import enviar_email_bienvenida
+    enviar_email_bienvenida(email)
+
     return jsonify(status='success', message='¡Pre-registro exitoso! Te avisaremos cuando lancemos.'), 201
